@@ -15,12 +15,13 @@ Tree parse(std::shared_ptr<std::string> inp)
 {
     std::regex comments("<!--(.*?)-->");
 	std::regex doc("<!DOCTYPE HTML>");
-    std::regex reg("<(/?[^\>]+)>");
-    std::regex attrs("([[:alnum:]]*)=('([^']*)'|\"([^\"]*)\"|([[:alnum:]]*))");
+    std::regex reg("<(/?[^\\>]+)>");
+    std::regex attrs("([[:alnum:]-]*)\\s*=\\s*([\'\"]\\s*(\\S*)\\s*[\'\"])");
 
    std::shared_ptr<std::string> inp1;
    std::shared_ptr<std::string> input;
-   bool docf = false;
+   bool docf;
+    docf = false;
    if(countMatchInRegex(inp, doc) != 0)
    {
 	   inp1 = std::make_shared<std::string>(" ");
@@ -78,7 +79,8 @@ for(;!(i==str_end);i++){
     for(;!(j==tag_end);j++){
         std::smatch match = *j;
         std::string name = match[1].str();
-        std::string value = match[2].str();;
+        std::string value = match[3].str();
+		
         attributes.insert( std::pair<std::string,std::string>(name,value) );
 
     }
