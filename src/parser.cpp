@@ -34,10 +34,9 @@ Tree parse(std::shared_ptr<std::string> inp)
    }
    if(countMatchInRegex(inp1,comments) != 0)
    {
-	   if(!docf)
-	   {
+	   
        input = std::make_shared<std::string>(" ");
-	   }
+	   
 	
          std::regex_replace(std::back_inserter(*input),
                      inp1->begin(), inp1->end(), comments, "");
