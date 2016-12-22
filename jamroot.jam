@@ -1,12 +1,14 @@
-project parser
-	: build-dir build
-	: requirements <link>static <threading>multi <variant>release <include>$(BOOST_ROOT)
-	;
 import os ;
 BOOST_ROOT = [ os.environ BOOST_ROOT ] ;
 use-project boost : $(BOOST_ROOT) ;
 
-lib parser : [ glob-tree *.cpp *.hpp : main.cpp ] /boost/filesystem : <link>static ;
+project parser
+	: build-dir build
+	: requirements <link>static <threading>multi <variant>release <include>$(BOOST_ROOT)
+	;
+
+
+lib parser : [ glob-tree *.cpp *.hpp *.h : main.cpp ] : <link>static ;
 
 exe parser_debug : src/main.cpp parser ;
 install inst_parser_debug : parser_debug : <location>build/bin ;

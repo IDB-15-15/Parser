@@ -1,7 +1,7 @@
 #ifndef tree_builder
 #define tree_builder
 #include <iostream>
-#include "tree_stuct.h"
+#include "tree.h"
 #include "boost/variant.hpp"
 #include <string>
 #include <vector>

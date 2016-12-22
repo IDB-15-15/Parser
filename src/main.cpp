@@ -1,6 +1,6 @@
 #include <iostream>
 #include "parser.h"
-#include "boost/variant.hpp"
+#include <boost/variant.hpp>
 
 void walk(boost::variant<Parser::Tree::Tag,Parser::Tree::Text> root){
     if(root.which() == 0){
@@ -25,9 +25,9 @@ void walk(boost::variant<Parser::Tree::Tag,Parser::Tree::Text> root){
 }
 
 int main(){
-    std::shared_ptr<std::string> input = std::make_shared<std::string>("<html><head><title>KEKEKEKEEK</title></head><body text='aqua' font-size='5'><a href='ya.ru'>yandex</a></body></html>");
-    Parser::Tree tree = Parser::parse(input);
-    Parser::Tree::Tag root = boost::get<Parser::Tree::Tag>(tree.root);
-	walk(tree.root);
+    std::shared_ptr<std::string> input = std::make_shared<std::string>("<html><head><title>KEKEKEKEEK</title></head><!--This is a comment. Comments are not displayed in the browser--><body text='aqua' font-size=\"5\" attr=1><a href='ya.ru'>yandex</a></body></html>");
+    Parser::Tree treer = Parser::parse(input);
+    Parser::Tree::Tag root = boost::get<Parser::Tree::Tag>(treer.root);
+        walk(treer.root);
     return 0;
 }
