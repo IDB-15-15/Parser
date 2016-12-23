@@ -4,11 +4,11 @@ use-project boost : $(BOOST_ROOT) ;
 
 project parser
 	: build-dir build
-	: requirements <link>static <threading>multi <variant>release <include>$(BOOST_ROOT)
+	: requirements <link>static <threading>multi <variant>release <include>$(BOOST_ROOT)  <include>../Network/src
 	;
 
 
-lib parser : [ glob-tree *.cpp *.hpp *.h : main.cpp ] : <link>static ;
+lib parser : [ glob-tree *.cpp *.hpp *.h : main.cpp ]  ../Network : <link>static ;
 
 exe parser_debug : src/main.cpp parser ;
 install inst_parser_debug : parser_debug : <location>build/bin ;

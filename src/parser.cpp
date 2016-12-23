@@ -11,13 +11,14 @@ int countMatchInRegex(std::shared_ptr<std::string> s, std::regex words_regex)
     return std::distance(words_begin, words_end);
 }
 
-Tree parse(std::shared_ptr<std::string> inp)
+Tree parse(Network::NetworkRes* res)
 {
     std::regex comments("<!--(.*?)-->");
 	std::regex doc("<!DOCTYPE HTML>");
     std::regex reg("<(/?[^\\>]+)>");
     std::regex attrs("([[:alnum:]-]*)\\s*=\\s*([\'\"]\\s*([\\S]*)\\s*[\'\"])");
 
+	std::shared_ptr<std::string> inp = std::make_shared<std::string>(res->res_arr);
    std::shared_ptr<std::string> inp1;
    std::shared_ptr<std::string> input;
    bool docf = false;
@@ -46,7 +47,9 @@ Tree parse(std::shared_ptr<std::string> inp)
       input = inp1;
    }
 
-
+res->res = input; 
+res->res_arr = input->c_str(); 
+res->size = input->size();
 auto str_begin =
         std::sregex_iterator(input->begin(), input->end(), reg);
 auto str_end = std::sregex_iterator();
@@ -61,8 +64,7 @@ for(;!(i==str_end);i++){
     int pos = i->position();
 
     if(pos-last_pos!= 0){
-        std::string text_str = input->substr(last_pos,pos-last_pos);
-        Tree::Text text(text_str);
+        Tree::Text text(input->c_str()+last_pos,pos-last_pos);
         b->add_text(text);
     }
     std::string tag_str = match[1].str();
@@ -82,8 +84,13 @@ for(;!(i==str_end);i++){
 
     }
     Tree::Tag tag(name_tag,attributes);
-    tag.input = input;
-    b->add_tag(tag,pos,match_str.size());
+	if(tag.name == "title"){
+		std::cout<<pos<<std::endl;
+	}
+	if(tag.name == "/title"){
+		std::cout<<pos+match_str.size()<<std::endl;
+	}
+    b->add_tag(tag,input->c_str(),pos,pos+match_str.size());
     last_pos = pos+match_str.size();
 }
 return b->root;

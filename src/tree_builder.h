@@ -15,24 +15,23 @@ public:
     Tree root;
     boost::variant<Tree::Tag,Tree::Text> *now = &root.root;
     int i = 0;
-    void add_tag(Tree::Tag tag, int pos, size_t size){
+    void add_tag(Tree::Tag tag, const char* begin,size_t pos, size_t end){
         if(i == 0){
-            tag.begin = pos;
+            tag.begin = begin;
             root.root = tag;
             boost::get<Tree::Tag>(root.root).parent = nullptr;
             i++;
         }else {
             if(tag.name.at(0) != '/'){
-                tag.begin = pos;
+                tag.begin = begin+pos;
+				tag.pos = pos;
                 tag.parent = now;
                 boost::get<Tree::Tag>(now)->children.push_back(tag);
                 now = &(boost::get<Tree::Tag>(now)->children.back());
             }else{
                 if(boost::get<Tree::Tag>(now)->parent != nullptr){
-                    boost::get<Tree::Tag>(now)->end = pos+size;
+                    boost::get<Tree::Tag>(now)->end = end;
                     now = boost::get<Tree::Tag>(now)->parent;
-
-
                 }
             }
         }

@@ -10,33 +10,35 @@ namespace Parser {
         class Text
         {
         public:
-            std::string value;
+            const char* value;
+			size_t size;
             Tag* parent = nullptr;
-            Text();
+            Text(){};
 
             ~Text() = default;
 
-            Text(std::string in_value){
-                this->value = in_value;
+            Text(const char* value_, size_t size_){
+                this->value = value_;
+				this->size = size_;
             }
         };
 
         class Tag
         {
         public:
-            std::shared_ptr<std::string> input;
             std::string name;
             std::map <std::string,std::string> attributes;
             std::vector<boost::variant<Tag,Text>> children;
             boost::variant<Tag,Text>* parent = nullptr;
-            int begin = 0;
-            int end  = 0;
+            const char* begin;
+			size_t pos;
+			size_t end;
             Tag(){}
 
-            std::pair<const char*,size_t> to_text(){
-                std::pair<const char*,size_t> result;
-                result.first = input->c_str()+begin;
-                result.second = end-begin;
+            Text to_text(){
+                Text result;
+				result.value = begin;
+                result.size = end-pos;
                 return result;
             }
 
