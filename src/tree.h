@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 #include "boost/variant.hpp"
-
 #include <map>
 namespace Parser {
         struct Tree{
@@ -25,13 +24,21 @@ namespace Parser {
         class Tag
         {
         public:
+            std::shared_ptr<std::string> input;
             std::string name;
             std::map <std::string,std::string> attributes;
             std::vector<boost::variant<Tag,Text>> children;
             boost::variant<Tag,Text>* parent = nullptr;
-
+            int begin = 0;
+            int end  = 0;
             Tag(){}
 
+            std::pair<const char*,size_t> to_text(){
+                std::pair<const char*,size_t> result;
+                result.first = input->c_str()+begin;
+                result.second = end-begin;
+                return result;
+            }
 
             Tag
             (std::string _name,std::map<std::string,std::string> _attributes)
