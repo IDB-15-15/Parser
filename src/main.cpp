@@ -12,7 +12,7 @@ void walk(boost::variant<Parser::Tree::Tag,Parser::Tree::Text> root){
            std::cout<<iter->first<<"="<<iter->second<<" ";
        }
        std::cout<<")"<<std::endl;
-            for(int i = 0; (unsigned)i < tag.children.size(); i++){
+            for(int i = 0; i < tag.children.size(); i++){
                 boost::variant<Parser::Tree::Tag,Parser::Tree::Text> next(boost::get<Parser::Tree::Tag>(root).children[i]);
                 walk(next);
             }
@@ -28,6 +28,6 @@ int main(){
     std::shared_ptr<std::string> input = std::make_shared<std::string>("<!DOCTYPE HTML><html><head><title>KEKEKEKEEK</title></head><!--This is a comment. Comments are not displayed in the browser--><body text='aqua'><a href='http://ya.ru'>yandex</a><font size=\"10\">asda</font></body></html>");
     Parser::Tree treer = Parser::parse(input);
     Parser::Tree::Tag root = boost::get<Parser::Tree::Tag>(treer.root);
-        walk(treer.root);
+    walk(treer.root);
     return 0;
 }

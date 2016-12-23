@@ -1,5 +1,5 @@
-#ifndef parser
-#define parser
+#ifndef PARSER
+#define PARSER
 #include <iostream>
 #include <vector>
 #include <regex>

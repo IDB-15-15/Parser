@@ -1,5 +1,5 @@
-#ifndef tree
-#define tree
+#ifndef TREE
+#define TREE
 #include <string>
 #include <vector>
 #include "boost/variant.hpp"
@@ -7,7 +7,6 @@
 #include <map>
 namespace Parser {
         struct Tree{
-
 		class Tag;
         class Text
         {
@@ -40,7 +39,7 @@ namespace Parser {
                 name = _name;
                 attributes = _attributes;
             }
-
+			
             ~Tag() = default;
         };
         boost::variant<Tag,Text> root;
