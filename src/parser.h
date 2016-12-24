@@ -4,6 +4,7 @@
 #include "networklib.h"
 #include "NETWORK.h"
 #include <networkres.h>
+#include <boost/any.hpp>
 #include <boost/variant.hpp>
 #include <vector>
 #include <regex>

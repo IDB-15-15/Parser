@@ -17,41 +17,41 @@ Tree parse(Network::NetworkRes* res)
 	std::regex doc("<!DOCTYPE HTML>");
     std::regex reg("<(/?[^\\>]+)>");
     std::regex attrs("([[:alnum:]-]*)\\s*=\\s*([\'\"]\\s*([\\S]*)\\s*[\'\"])");
-
-	std::shared_ptr<std::string> inp = std::make_shared<std::string>(res->res_arr);
-   std::shared_ptr<std::string> inp1;
-   std::shared_ptr<std::string> input;
-   bool docf = false;
-   if(countMatchInRegex(inp, doc) != 0)
-   {
-	   inp1 = std::make_shared<std::string>("");
-       std::regex_replace(std::back_inserter(*inp1),
-                     inp->begin(), inp->end(), doc, "");
-					 docf = true;
-   }
-   else
-   {
-      inp1 = inp;
-   }
-   if(countMatchInRegex(inp1,comments) != 0)
-   {
-	  
-       input = std::make_shared<std::string>("");
-	   
 	
-         std::regex_replace(std::back_inserter(*input),
-                     inp1->begin(), inp1->end(), comments, "");
-   }
-   else
+   std::shared_ptr<std::string>  source = std::make_shared<std::string>(res->res_arr,res->size);
+   std::shared_ptr<std::string> wodoc;
+   std::shared_ptr<std::string> wocoms;
+   
+   bool docf = false;
+   bool comf = false;
+   if(countMatchInRegex(source, doc) != 0)
    {
-      input = inp1;
+	   wodoc = std::make_shared<std::string>("");
+       std::regex_replace(std::back_inserter(*wodoc),
+                     source->begin(), source->end(), doc, "");
+					 docf = true;
+   }else{
+	   wodoc = source;
+   }
+   if(countMatchInRegex(wodoc,comments) != 0)
+   {
+	   wocoms = std::make_shared<std::string>("");
+         std::regex_replace(std::back_inserter(*wocoms),
+                     wodoc->begin(), wodoc->end(), comments, "");
+					 comf = true;
+   }else{
+	  wocoms = wodoc; 
    }
 
-res->res = input; 
-res->res_arr = input->c_str(); 
-res->size = input->size();
+	if(docf || comf){
+		res->res_arr = wocoms->c_str();
+		res->size = wocoms->size();
+		res->res = wocoms;
+	}
+
+
 auto str_begin =
-        std::sregex_iterator(input->begin(), input->end(), reg);
+        std::sregex_iterator(wocoms->begin(), wocoms->end(), reg);
 auto str_end = std::sregex_iterator();
 
 
@@ -64,7 +64,7 @@ for(;!(i==str_end);i++){
     int pos = i->position();
 
     if(pos-last_pos!= 0){
-        Tree::Text text(input->c_str()+last_pos,pos-last_pos);
+        Tree::Text text(wocoms->c_str()+last_pos,pos-last_pos);
         b->add_text(text);
     }
     std::string tag_str = match[1].str();
@@ -84,9 +84,10 @@ for(;!(i==str_end);i++){
 
     }
     Tree::Tag tag(name_tag,attributes);
-    b->add_tag(tag,input->c_str(),pos,pos+match_str.size());
+    b->add_tag(tag,wocoms->c_str(),pos,pos+match_str.size());
     last_pos = pos+match_str.size();
 }
+
 return b->root;
 }
 
