@@ -14,7 +14,7 @@ int countMatchInRegex(std::shared_ptr<std::string> s, std::regex words_regex)
 Tree parse(Network::NetworkRes* res)
 {
     std::regex comments("<!--(.*?)-->");
-	std::regex doc("<!DOCTYPE HTML>");
+	std::regex doc("<!DOCTYPE html>");
     std::regex reg("<(/?[^\\>]+)>");
     std::regex attrs("([[:alnum:]-]*)\\s*=\\s*([\'\"]\\s*([\\S]*)\\s*[\'\"])");
 	
@@ -64,8 +64,16 @@ for(;!(i==str_end);i++){
     int pos = i->position();
 
     if(pos-last_pos!= 0){
+		std::string str(wocoms->c_str()+last_pos,pos-last_pos);
+		int spaces = 0;;
+		for(auto it : str){
+			if(isspace(it))
+				spaces++;
+		}
+		if(spaces!=pos-last_pos){
         Tree::Text text(wocoms->c_str()+last_pos,pos-last_pos);
         b->add_text(text);
+		}
     }
     std::string tag_str = match[1].str();
     auto tag_begin =

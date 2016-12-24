@@ -17,14 +17,7 @@ void walk(boost::variant<Parser::Tree::Tag,Parser::Tree::Text> root){
                 walk(next);
             }
         }
-        if(tag.name == "a"){
-            std::cout<<std::endl;
-            std::cout<<"this is tag as text:"<<std::endl;
-            std::pair<const char*,size_t> t = tag.to_text();
-            std::cout.write(t.first,t.second);
-            std::cout<<std::endl;
-            std::cout<<std::endl;
-        }
+        
     }else{
         Parser::Tree::Text text = boost::get<Parser::Tree::Text>(root);
         std::cout<<text.value<<std::endl;
