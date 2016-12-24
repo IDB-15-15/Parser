@@ -84,12 +84,6 @@ for(;!(i==str_end);i++){
 
     }
     Tree::Tag tag(name_tag,attributes);
-	if(tag.name == "title"){
-		std::cout<<pos<<std::endl;
-	}
-	if(tag.name == "/title"){
-		std::cout<<pos+match_str.size()<<std::endl;
-	}
     b->add_tag(tag,input->c_str(),pos,pos+match_str.size());
     last_pos = pos+match_str.size();
 }
