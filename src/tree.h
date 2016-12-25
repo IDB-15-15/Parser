@@ -12,14 +12,16 @@ namespace Parser {
         public:
             const char* value;
 			size_t size;
+			std::string str;
             Tag* parent = nullptr;
             Text(){};
 
             ~Text() = default;
 
-            Text(const char* value_, size_t size_){
+            Text(const char* value_, size_t size_, std::string str_=""){
                 this->value = value_;
 				this->size = size_;
+				this->str = str_;
             }
         };
 

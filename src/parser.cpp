@@ -18,15 +18,16 @@ Tree parse(Network::NetworkRes* res)
     std::regex reg("<(/?[^\\>]+)>");
     std::regex attrs("([[:alnum:]-]*)\\s*=\\s*([\'\"]\\s*([\\S]*)\\s*[\'\"])");
 	
-   std::shared_ptr<std::string>  source = std::make_shared<std::string>(res->res_arr,res->size);
-   std::shared_ptr<std::string> wodoc;
-   std::shared_ptr<std::string> wocoms;
+   std::shared_ptr<std::string> source = nullptr;
+   std::shared_ptr<std::string> wodoc = nullptr;
+   std::shared_ptr<std::string> wocoms  = nullptr;
+   
+   source = std::make_shared<std::string>(res->res_arr,res->size);
    
    bool docf = false;
    bool comf = false;
    if(countMatchInRegex(source, doc) != 0)
    {
-	   wodoc = std::make_shared<std::string>("");
        std::regex_replace(std::back_inserter(*wodoc),
                      source->begin(), source->end(), doc, "");
 					 docf = true;
@@ -35,7 +36,6 @@ Tree parse(Network::NetworkRes* res)
    }
    if(countMatchInRegex(wodoc,comments) != 0)
    {
-	   wocoms = std::make_shared<std::string>("");
          std::regex_replace(std::back_inserter(*wocoms),
                      wodoc->begin(), wodoc->end(), comments, "");
 					 comf = true;
@@ -65,13 +65,14 @@ for(;!(i==str_end);i++){
 
     if(pos-last_pos!= 0){
 		std::string str(wocoms->c_str()+last_pos,pos-last_pos);
-		int spaces = 0;;
+
+		int spaces = 0;
 		for(auto it : str){
 			if(isspace(it))
 				spaces++;
 		}
 		if(spaces!=pos-last_pos){
-        Tree::Text text(wocoms->c_str()+last_pos,pos-last_pos);
+        Tree::Text text(wocoms->c_str()+last_pos,pos-last_pos,str);
         b->add_text(text);
 		}
     }

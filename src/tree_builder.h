@@ -58,6 +58,7 @@ public:
     void add_text(Tree::Text text){
         Tree::Tag* t = &(boost::get<Tree::Tag>(*now));
         text.parent = t;
+		
         boost::get<Tree::Tag>(*now).children.push_back(text);
     }
 };
