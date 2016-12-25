@@ -23,26 +23,29 @@ Tree parse(Network::NetworkRes* res)
    std::shared_ptr<std::string> wocoms  = nullptr;
    
    source = std::make_shared<std::string>(res->res_arr,res->size);
-   
+   std::cout<<"source : "<<*source<<std::endl;
    bool docf = false;
    bool comf = false;
    if(countMatchInRegex(source, doc) != 0)
    {
+	   wodoc = std::make_shared<std::string>();
        std::regex_replace(std::back_inserter(*wodoc),
                      source->begin(), source->end(), doc, "");
 					 docf = true;
    }else{
 	   wodoc = source;
    }
+   std::cout<<"wodoc : "<<*wodoc<<std::endl;
    if(countMatchInRegex(wodoc,comments) != 0)
    {
+		wocoms = std::make_shared<std::string>();
          std::regex_replace(std::back_inserter(*wocoms),
                      wodoc->begin(), wodoc->end(), comments, "");
 					 comf = true;
    }else{
 	  wocoms = wodoc; 
    }
-
+std::cout<<"wocoms : "<<*wocoms<<std::endl;
 	if(docf || comf){
 		res->res_arr = wocoms->c_str();
 		res->size = wocoms->size();
