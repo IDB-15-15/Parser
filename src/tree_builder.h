@@ -23,16 +23,34 @@ public:
             i++;
         }else {
             if(tag.name.at(0) != '/'){
-                tag.begin = begin+pos;
-				tag.pos = pos;
-                tag.parent = now;
-                boost::get<Tree::Tag>(now)->children.push_back(tag);
-                now = &(boost::get<Tree::Tag>(now)->children.back());
+				
+					tag.begin = begin+pos;
+					tag.pos = pos;
+					tag.end = end;
+					tag.parent = now;
+					
+					boost::get<Tree::Tag>(now)->children.push_back(tag);
+					if(tag.name == "meta" || tag.name == "link" || tag.name =="img" || tag.name =="br" ){
+					
+					}else{
+						now = &(boost::get<Tree::Tag>(now)->children.back());
+					}
+
             }else{
+				if(tag.name == "/meta" || tag.name == "/link" || tag.name =="/img" || tag.name =="/br"){
+					tag.begin = begin+pos;
+					tag.pos = pos;
+					tag.end = end;
+					tag.parent = now;
+					boost::get<Tree::Tag>(now)->children.push_back(tag);
+				}else{	
+
                 if(boost::get<Tree::Tag>(now)->parent != nullptr){
                     boost::get<Tree::Tag>(now)->end = end;
                     now = boost::get<Tree::Tag>(now)->parent;
-                }
+                }				
+
+				}
             }
         }
     }

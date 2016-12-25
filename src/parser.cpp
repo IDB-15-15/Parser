@@ -14,7 +14,7 @@ int countMatchInRegex(std::shared_ptr<std::string> s, std::regex words_regex)
 Tree parse(Network::NetworkRes* res)
 {
     std::regex comments("<!--(.*?)-->");
-	std::regex doc("<!DOCTYPE\s*(.*?)*\s*>");
+	std::regex doc("<!DOCTYPE\\s*(.*?)*\\s*>");
     std::regex reg("<(/?[^\\>]+)>");
     std::regex attrs("([[:alnum:]-]*)\\s*=\\s*([\'\"]\\s*([\\S]*)\\s*[\'\"])");
 	
